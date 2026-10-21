@@ -8,6 +8,7 @@ public class ItemCoin : MonoBehaviour
     [SerializeField] GameObject particle;
 
     GameManager gameManager;
+    SoundManager soundManager;
     PlayerController playerController;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
@@ -15,6 +16,9 @@ public class ItemCoin : MonoBehaviour
     {
         GameObject gm = GameObject.FindWithTag("GameController");
         gameManager = gm.GetComponent<GameManager>();
+
+        GameObject sm = GameObject.FindWithTag("SoundController");
+        soundManager = sm.GetComponent<SoundManager>();
 
         GameObject play = GameObject.FindWithTag("Player");
         playerController = play.GetComponent<PlayerController>();
@@ -34,6 +38,7 @@ public class ItemCoin : MonoBehaviour
             image.SetActive(false);
             particle.SetActive(true);
             playerController.CurHp += (price * 5);
+            soundManager.SoundPlay("SECoin");
         }
     }
 

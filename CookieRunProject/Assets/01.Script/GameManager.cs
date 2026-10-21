@@ -7,10 +7,12 @@ public class GameManager : MonoBehaviour
 {
 
     private int coinAmount=0;
+    private int score=0;
     private float maxhp;
     private float hp;
 
     [SerializeField] TMP_Text coinTXT;
+    [SerializeField] TMP_Text scoreTXT;
 
     [SerializeField] Image hpImage;
 
@@ -58,6 +60,12 @@ public class GameManager : MonoBehaviour
     {
         gameOverUI.SetActive(true);
         isGameOver = true;
+    }
+
+    public void ScoreUp()
+    {
+        score++;
+        scoreTXT.text = $"score: {score}";
     }
 
 }

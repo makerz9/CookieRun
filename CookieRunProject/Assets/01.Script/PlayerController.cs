@@ -1,7 +1,7 @@
 using System;
-using System.Security.Cryptography;
+
 using Unity.Mathematics;
-using Unity.VisualScripting;
+
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviour
     private float maxHp=100;
 
     GameManager gameManager;
+    SoundManager soundManager;
 
     public float CurHp
     {
@@ -61,6 +62,10 @@ public class PlayerController : MonoBehaviour
     {   
         GameObject gm = GameObject.FindWithTag("GameController");
         gameManager = gm.GetComponent<GameManager>();
+
+        GameObject sm = GameObject.FindWithTag("SoundController");
+        soundManager = sm.GetComponent<SoundManager>();
+
         //기본 설정 구현
         animator = GetComponent<Animator>();
         rigid = GetComponent<Rigidbody2D>();
@@ -111,6 +116,7 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("isGrounded", false);
         animator.SetBool("isSlide", false);
         NormalCollider();
+        soundManager.SoundPlay("SEJump");
 
     }
 
@@ -224,6 +230,7 @@ public class PlayerController : MonoBehaviour
         
         animator.SetTrigger("isDie");
         gameManager.isGameOver = true;
+        soundManager.SoundPlay("SEDie");
     }
 
     #endregion

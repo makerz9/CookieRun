@@ -9,6 +9,7 @@ TagManager:
   - Platform
   - Coin
   - Upper
+  - SoundController
   layers:
   - Default
   - TransparentFX
