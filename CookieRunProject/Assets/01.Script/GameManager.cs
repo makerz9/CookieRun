@@ -11,11 +11,13 @@ public class GameManager : MonoBehaviour
     private float maxhp;
     private float hp;
 
+    [Header("UI")]
     [SerializeField] TMP_Text coinTXT;
     [SerializeField] TMP_Text scoreTXT;
 
     [SerializeField] Image hpImage;
 
+    [Header("GameOver")]
     public bool isGameOver;
 
     [SerializeField] GameObject gameOverUI;
@@ -27,14 +29,16 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space)&& isGameOver)
+        //게임오버 재시작
+        if(Input.GetKeyDown(KeyCode.R) && isGameOver)
         {
             SceneManager.LoadScene("CookieRun");
         }
     }
 
 
-
+    //코인 획득 원본값 수정 방지를 위해
+    //private 변수값과 public 함수로 처리
     public void CoinGet(int value)
     {
         coinAmount += value;

@@ -1050,8 +1050,9 @@ MonoBehaviour:
   maxJumpCount: 2
   jumpPower: 10
   grounded: 1
-  sliding: 0
+  damaged: 0
   curHp: 100
+  spriteRenderer: {fileID: 465426162}
 --- !u!1 &614223478
 GameObject:
   m_ObjectHideFlags: 0
@@ -2001,6 +2002,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1274982973
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1274982974}
+  m_Layer: 0
+  m_Name: ItemManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1274982974
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1274982973}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1302832865
 GameObject:
   m_ObjectHideFlags: 0
@@ -2135,7 +2167,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Press space to
+  m_text: Press R to
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 615414b5d7373854598186661edde2df, type: 2}
   m_sharedMaterial: {fileID: 5792722507135682399, guid: 615414b5d7373854598186661edde2df, type: 2}
@@ -2260,7 +2292,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 09840231a4cef61489aac92348a90305, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.485
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -2461,8 +2493,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 64
-  m_fontSizeBase: 64
+  m_fontSize: 48
+  m_fontSizeBase: 48
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2726,6 +2758,7 @@ SceneRoots:
   - {fileID: 31042211}
   - {fileID: 1133776716}
   - {fileID: 805117743}
+  - {fileID: 1274982974}
   - {fileID: 767400559}
   - {fileID: 465426163}
   - {fileID: 1475364534}

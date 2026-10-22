@@ -19,15 +19,16 @@ public class PlayerController : MonoBehaviour
 
     Animator animator;
     Rigidbody2D rigid;
-
     CapsuleCollider2D capsule;
 
     [SerializeField] private bool grounded = true;
-    [SerializeField] private bool sliding = false;
+    //[SerializeField] private bool sliding = false;
 
-
+    [SerializeField] private bool damaged = false;
 
     [SerializeField] private float curHp;
+
+    [SerializeField] SpriteRenderer spriteRenderer;
     private float maxHp=100;
 
     GameManager gameManager;
@@ -66,6 +67,7 @@ public class PlayerController : MonoBehaviour
         GameObject sm = GameObject.FindWithTag("SoundController");
         soundManager = sm.GetComponent<SoundManager>();
 
+        spriteRenderer.color = new Color(1f,1f,1f,1f);
         //기본 설정 구현
         animator = GetComponent<Animator>();
         rigid = GetComponent<Rigidbody2D>();
@@ -93,6 +95,7 @@ public class PlayerController : MonoBehaviour
         }
 
         //슬라이드
+        //꾹 누를때 자연스럽게 실행되게하기 위해 GetKeyDown -> GetKey
         if(Input.GetKey(KeyCode.LeftShift) && grounded)
         {
             OnSlide();
@@ -102,7 +105,7 @@ public class PlayerController : MonoBehaviour
             OffSlide();
         }
 
-        CurHp -= Time.deltaTime;
+        CurHp -= Time.deltaTime * 2;
 
     }
 
@@ -115,6 +118,8 @@ public class PlayerController : MonoBehaviour
         jumpCount--;
         animator.SetBool("isGrounded", false);
         animator.SetBool("isSlide", false);
+
+        //점프할때 기본 콜라이더 강제 변경
         NormalCollider();
         soundManager.SoundPlay("SEJump");
 
@@ -128,36 +133,42 @@ public class PlayerController : MonoBehaviour
         {
             grounded = true;
             jumpCount = maxJumpCount;
-            animator.SetBool("isGrounded", true);
+            animator.SetBool("isGrounded", true);  
+
         }
 
-        if(collision.gameObject.CompareTag("Upper"))
-        {
-            jumpCount++;
+        //쿠키런과 어울리지 않는 기능
+        // if(collision.gameObject.CompareTag("Upper"))
+        // {
+               //추가 점프
+        //     jumpCount++;
             
-        }
+        // }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.CompareTag("Dead"))
         {
-            TakeDamage(50f);
+            //구덩이 빠짐
+            TakeDamage(50f); //큰 데미지
             Vector3 newPosition = transform.position;
             newPosition.y += 20f;
+            //구출시스템 = 빠지면 화면 위에서 다시 내려옴
             transform.position = newPosition;
         }
 
         if(collision.gameObject.CompareTag("Obstacle"))
         {
+            //매개변수로 확장성 설계
             TakeDamage(20f);
             
         }
 
-        if(collision.gameObject.CompareTag("Upper"))
-        {
-            jumpCount++;
-        }
+        // if(collision.gameObject.CompareTag("Upper"))
+        // {
+        //     jumpCount++;
+        // }
     }
 
     //떨어짐
@@ -168,21 +179,31 @@ public class PlayerController : MonoBehaviour
             grounded = false;
             animator.SetBool("isGrounded", false);
             animator.SetBool("isSlide", false);
-            NormalCollider();
+            NormalCollider();  
+
+            //미세한 플랫폼 간 틈에서 생기는 체공 문제 해결하기 위해
+            //살짝만 플레이어를 위로 들어서 땅에 착지시켜 상태 초기화
+            transform.position = new Vector2(transform.position.x,transform.position.y+0.01f);
         }
 
-        if(collision.gameObject.CompareTag("Upper"))
-        {
-            jumpCount = Math.Max(jumpCount - 1, 0);
+        // if(collision.gameObject.CompareTag("Upper"))
+        // {
+        //     jumpCount = Math.Max(jumpCount - 1, 0);
             
-        }
+        // }
     }
+
+
+
+
+
 
 #endregion
 
 //슬라이드 기능
     #region SlideFunction
 
+    //슬라이드중
     private void OnSlide()
     {
 
@@ -192,6 +213,8 @@ public class PlayerController : MonoBehaviour
         
         animator.SetBool("isSlide", true);
     }
+
+    //슬라이더 종료
     private void OffSlide()
     {
         //원래 콜라이더로 돌아올일 쓸떼 많아 함수로 분리;
@@ -214,8 +237,20 @@ public class PlayerController : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        Debug.Log(damage);
-        CurHp -= damage;  
+        if(!damaged)
+        {
+            Debug.Log(damage);
+            CurHp -= damage;
+            damaged = true;
+        spriteRenderer.color = new Color(1f,1f,1f,0.5f);
+            Invoke("OffInvincibility", 1);//1초동안 무적 활성화
+        }
+    }
+
+    private void OffInvincibility()
+    {
+        spriteRenderer.color = new Color(1f,1f,1f,1f);
+        damaged = false;
     }
 
     #endregion
@@ -227,7 +262,7 @@ public class PlayerController : MonoBehaviour
     private void Dead()
     {
         rigid.simulated = false;
-        
+        OffInvincibility();
         animator.SetTrigger("isDie");
         gameManager.isGameOver = true;
         soundManager.SoundPlay("SEDie");

@@ -24,12 +24,18 @@ public class ItemCoin : MonoBehaviour
         playerController = play.GetComponent<PlayerController>();
     }
 
+    //먹으면 이미지가 사라지기 때문에
+    //다시 생성되면 이미지와 파티클 초기화
     private void OnEnable()
     {
+        //초기화 스크립트
         image.SetActive(true);
         particle.SetActive(false);
     }
 
+    
+
+    //아이템 효과는 아이템에서 처리
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.CompareTag("Player"))
